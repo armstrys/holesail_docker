@@ -1,7 +1,7 @@
 # Run with
-# DOCKER_IMAGE=jupyter/minimal-notebook SERVICE_PORT=8888 docker compose up
+# DOCKER_IMAGE=jupyter/minimal-notebook SERVICE_PORT=8888 docker compose up --build -V 
 services:
-  jupyter:
+  service:
     image: "${DOCKER_IMAGE}"
     ports:
       - "${SERVICE_PORT}:${SERVICE_PORT}"

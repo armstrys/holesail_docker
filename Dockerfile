@@ -2,4 +2,6 @@ From node:20-buster
 
 RUN npm i holesail -g
 
-CMD holesail --live 8888
+ARG ${PORT}
+
+CMD holesail --live ${PORT}
