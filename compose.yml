@@ -1,0 +1,15 @@
+# Run with
+# DOCKER_IMAGE=jupyter/minimal-notebook SERVICE_PORT=8888 docker compose up
+services:
+  jupyter:
+    image: "${DOCKER_IMAGE}"
+    ports:
+      - "${SERVICE_PORT}:${SERVICE_PORT}"
+
+  holesail:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${SERVICE_PORT}
+    network_mode: "host"
