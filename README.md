@@ -7,7 +7,20 @@ This is a git repo to make it dead simple to pull the docker image of a self-hos
 
 The primary implementation is using [holesail](https://holesail.io) which is a newer implementation of [hypertele](https://github.com/bitfinexcom/hypertele). I will attempt to update this repo as Holesail continues to add features, but plan to have a branch (or possibly another repo) availably using hypertele for those who want minimal features, but need an MIT license for their usage.
 
-A minimal example below that runs a dockerized service ([traggo](https://traggo.net)) and then serves it via holesail - the key used to connect on a remote machine will be output in the terminal or docker logs:
+Make a random private connector with
+```bash
+echo "HOLESAIL_CONNECTOR=\"$(head -c 63 /dev/random | base64)\"" >> .env
+```
+
+A .env file is provided in this repo that defines an example below that runs a dockerized service ([traggo](https://traggo.net)) and then serves it via holesail - the key used to connect on a remote machine will be output in the terminal or docker logs. Run the example with:
+
+
+```bash
+docker compose up --build -V
+```
+
+Alternatively, you can define a service on the fly like
+
 ```bash
 DOCKER_IMAGE=traggo/server:latest SERVICE_PORT=3030 docker compose up --build -V
 ```
