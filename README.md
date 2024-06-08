@@ -11,22 +11,21 @@ Docker allows you to pull prebuilt images and run them in isolated containers. W
 The primary implementation uses [holesail](https://holesail.io), a newer version of [hypertele](https://github.com/bitfinexcom/hypertele). This repository will be updated as Holesail evolves, with a branch for those preferring hypertele and an MIT license.
 
 ## What Does This Repo Do?
-Running `bash holesail_service.sh` in your Linux or Mac terminal will:
-1. Name your service for Docker and the definition folder.
-2. Provide the Docker image tag to pull.
-3. Specify the default port the service runs on.
-4. Choose a different local port if needed.
-5. Set a connection key (or generate a random one).
 
-Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs container_name` on the holesail container.
+You will need to perform a minimum of 3 steps:
+1. run `bash build_holesail_service.sh`
+2. place a compose.yml that defines your service (these are often provided by the service) in the folder created for you
+3. run `bash start_service.sh`
 
-## Advanced Usage
-The `holesail_services.sh` script creates a folder for service definitions and launches containers in the background with an auto-restart policy. Each service folder includes:
+Running `bash build_holesail_service.sh` in your Linux or Mac terminal will ask you to name the service, define the port the service will be running on, and then request or create a connector key for a secure connection.
 
-- `Dockerfile`: Custom Dockerfile to create a holesail-server image.
-- `compose.yml`: Docker Compose file for holesail connection and service settings.
-- `.env`: Environment variables for `config.yml`. You can manually edit this file.
-- `start_service.sh`: Script to start services with Docker. `--build` ensures clean rebuilds, and `-d` runs containers in the background.
+After you provide your `compose.yml` file, `start_service.sh` will use that file along with the other files in the folder to run your service alongside a dedicated holesail connection.
+
+Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs holesailcontainer_name` on the holesail container. Your connection key is also accessible with quotation marks around it in the `.env` file for your service.
+
+## Example
+
+See in an example the `traggo_example folder`. All the compose file was taken from [their installation page](https://traggo.net/install/). The only modification was adding `restart: unless-stopped` to the `.yml` to allow the service to restart on its own.
 
 **TODO:**
 - Create a script to launch a persistent Docker image on the client side.
