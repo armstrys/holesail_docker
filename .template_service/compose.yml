@@ -7,6 +7,14 @@ services:
     ports:
       - "${DOCKER_PORT}:${SERVICE_PORT}"
     restart: unless-stopped
+##################### Add custom docker service settings here ################
+#####################               Example below             ################
+#   volumes:                                                                 #
+#     - /directory/for/storage/on/system:/docker/container/storage/directory #
+#   environment:                                                             #
+#     TRAGGO_DEFAULT_USER_NAME: "admin"                                      #
+#     TRAGGO_DEFAULT_USER_PASS: "mynewpassword"                              #
+##############################################################################
 
   holesail:
     build:

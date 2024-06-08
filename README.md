@@ -26,7 +26,7 @@ The `holesail_services.sh` script creates a folder for service definitions and l
 - `Dockerfile`: Custom Dockerfile to create a holesail-server image.
 - `compose.yml`: Docker Compose file for holesail connection and service settings.
 - `.env`: Environment variables for `config.yml`. You can manually edit this file.
-- `start_service.sh`: Script to start services with Docker. `--build -V` ensures clean rebuilds, and `-d` runs containers in the background.
+- `start_service.sh`: Script to start services with Docker. `--build` ensures clean rebuilds, and `-d` runs containers in the background.
 
 **TODO:**
 - Create a script to launch a persistent Docker image on the client side.
