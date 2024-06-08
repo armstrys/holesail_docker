@@ -12,6 +12,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    network_mode: "host"
     environment:
       - PORT=${DOCKER_PORT}
       # if the HOLESAIL_CONNECTOR is not manually set this will intentionally error out holesail
