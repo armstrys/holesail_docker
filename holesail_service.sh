@@ -12,7 +12,7 @@ docker pull $service_tag
 
 read -p "What is the default port used by the service (refer to service docs): " service_port
 read -p "What port should your local server use? [${service_port}]: " docker_port
-read -p "Please provide a wholesail connection string [63 char random hex]: " connector
+read -p "Please provide a holesail connection string [63 char random hex]: " connector
 
 name=${docker_port:=$service_port}  # if empty default to service_port
 connector=${connector:=$(head -c 63 /dev/random | base64)}  # if empty defaul to random hex
