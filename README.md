@@ -5,41 +5,33 @@
 
 This is a git repo to make it dead simple to pull the docker image of a self-hosted service and serve it across a [HyperDHT](https://docs.pears.com/building-blocks/hyperdht) P2P tunnel that avoids many of the networking challenges associated with accessing self-hosted services remotely.
 
-The primary implementation is using [holesail](https://holesail.io) which is a newer implementation of [hypertele](https://github.com/bitfinexcom/hypertele). I will attempt to update this repo as Holesail continues to add features, but plan to have a branch (or possibly another repo) availably using hypertele for those who want minimal features, but need an MIT license for their usage.
+## The Basics (skip this if you are comfortable with Docker)
+Docker allows you to pull prebuilt images from the internet and run them in isolated "containers". Many server apps offer a standalone Docker image that will allow you to deploy an app on your local server, but after that you are on your own. This is where [holesail](https://holesail.io) comes in! The code in this repo will allow you to launch a companion docker container for each service that gives you a connection to that service that you can tunnel into from anywhere. You will need an installation of [Docker](https://docs.docker.com) for this repo to be useful. On Mac you will need additional packages or you can try [OrbStack](https://orbstack.dev), which is a drop in replacement for Docker on Mac.
 
-Make a random private connector with
-```bash
-echo "HOLESAIL_CONNECTOR=\"$(head -c 63 /dev/random | base64)\"" >> .env
-```
+The primary implementation is using [holesail](https://holesail.io) which is a newer implementation of [hypertele](https://github.com/bitfinexcom/hypertele). I will attempt to update this repo as Holesail continues to add features, but plan to have a branch (or possibly another repo) available using hypertele for those who want minimal features, but need an MIT license for their usage.
 
-A .env file is provided in this repo that defines an example below that runs a dockerized service ([traggo](https://traggo.net)) and then serves it via holesail - the key used to connect on a remote machine will be output in the terminal or docker logs. Run the example with:
+## What does this repo actually do?
+When you run the `bash holesail_service.sh` in your linux or mac terminal you will be prompted for information to make a few things happen:
+1. give your service a name that can be used in docker and for the definition folder
+2. provide the tag of the docker image you will want to pull. You can find many examples on the internet - I have not tested many yet and some may require more configuration than this repository allows. You can always attempt to manually edit the configuration for a given service and run `bash start_service.sh` to rerun a particular service.
+3. Asks you to proved the default port that the service runs on. This should be provided in the documentation for the service you are installing.
+4. Allows you to select a different port for your local server (This is mostly important if you want to run two instances of things that want to use the same port).
+5. Asks for a connection key (this is effectively your password). If you do not select one then it will generate a random 63 character key. You will need to check the logs of the holesail container to get this key after it starts!
 
+You can run `docker_ps` to see your running containers.
 
-```bash
-docker compose up --build -V
-```
+To view the logs of a container (including your holesail key), run `docker logs container_name` on the holesail container for the appropriate service
 
-Alternatively, you can define a service on the fly like
+## Digging deeper (for debugging or further customization)
+Running the `holesail_services.sh` script will build a folder to define the services and attempt to launch the containers in the background with a docker policy to always restart unless stopped
 
-```bash
-DOCKER_IMAGE=traggo/server:latest SERVICE_PORT=3030 docker compose up --build -V
-```
+Each service folder consists of 4 files (3 of which get copied from the `.template_service` folder):
+- `Dockerfile` - a custom Dockerfile to make a holesail-server image
+- `compose.yml` - a Docker Compose settings file that will define the holesail connection and your service settings. Some more complex services may require you to put additional settings in the compose.yml. This is a hierarchical settings file and you will mainly want to tinker with adding arguments or additional settings to the non-holesail service. You can often find examples in the service documentation if it is an official Docker image from the team
+- `.env` - a settings file that provides environment variables to the `config.yml`. The `holesail_services.sh` script builds a rough version of this file for you. You can always manually edit or add some additional variables for service settings if you see fit.
+- `start_service.sh` - a very simple script that defines how the services are started using docker. `--build -V` ensures a clean rebuild of the images each time in case there are updates. `-d` tells the containers to run in the background so that they are not shutdown when this terminal instance closes.
 
-Connect on a remote machine with:
-
-```bash
-holesail {your_seed}
-```
-
-or if you would like to access on a certain port, besides the default of 8989
-
-```bash
-holesail {your_seed} --port {a_new_port}
-```
-
-You can now access your connection at http://127.0.0.1:8989 or the same address with 8989 replaced by your selected port.
 
 TODO:
- - allow input of custom string as a seed (password)
- - allow host parameter to vary
+ - build an equivalent script to launch a persistent docker image on the client side for accessing these services
  - make a limited version using hypertele for uses where MIT license is needed
