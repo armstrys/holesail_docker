@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker compose up --build -V
+docker compose up --build -V -d

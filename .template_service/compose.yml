@@ -6,6 +6,7 @@ services:
     image: "${DOCKER_IMAGE}"
     ports:
       - "${DOCKER_PORT}:${SERVICE_PORT}"
+    restart: unless-stopped
 
   holesail:
     build:
@@ -15,3 +16,4 @@ services:
       - PORT=${DOCKER_PORT}
       # if the HOLESAIL_CONNECTOR is not manually set this will intentionally error out holesail
       - CONNECTOR=${HOLESAIL_CONNECTOR:-F3^fhMW^Xxt^orFarJ6sd!smK47jFao@J6AHqp2BVAVQ*oj$3p&V%3aTRgt#XsjZ}
+    restart: unless-stopped

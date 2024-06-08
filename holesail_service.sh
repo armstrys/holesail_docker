@@ -16,8 +16,6 @@ read -p "Please provide a wholesail connection string [63 char random hex]: " co
 
 name=${docker_port:=$service_port}  # if empty default to service_port
 connector=${connector:=$(head -c 63 /dev/random | base64)}  # if empty defaul to random hex
-# connector=${connector:=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 63)}  # if empty defaul to random hex
-
 
 echo "# docker compose up --build -V" > ./${service_name}/.env
 echo "DOCKER_NAME=\"${service_name}\"  # A unique name for your docker container" >> ./${service_name}/.env
