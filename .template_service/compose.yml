@@ -1,0 +1,19 @@
+# Run with
+# DOCKER_NAME=jupyter DOCKER_IMAGE=jupyter/minimal-notebook SERVICE_PORT=8888 DOCKER_PORT=8888 docker compose up --build -V 
+name: "${DOCKER_NAME}"
+services:
+  service:
+    image: "${DOCKER_IMAGE}"
+    ports:
+      - "${DOCKER_PORT}:${SERVICE_PORT}"
+    restart: unless-stopped
+
+  holesail:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${DOCKER_PORT}
+      # if the HOLESAIL_CONNECTOR is not manually set this will intentionally error out holesail
+      - CONNECTOR=${HOLESAIL_CONNECTOR:-F3^fhMW^Xxt^orFarJ6sd!smK47jFao@J6AHqp2BVAVQ*oj$3p&V%3aTRgt#XsjZ}
+    restart: unless-stopped
