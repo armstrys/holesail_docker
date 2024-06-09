@@ -38,6 +38,7 @@ Setting the files below will allow you to launch this service and holesail with 
 DOCKER_NAME="dozzle"  # A unique name for your docker container
 DOCKER_PORT=9999  # The port that will be used by your server - can be the same as the service port or different if needed
 HOLESAIL_CONNECTOR="make_this_a_random_strong_password!!!!!!"
+SERVICE_HOST="localhost"
 ```
 
 `compose.override.yml`
