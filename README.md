@@ -7,41 +7,40 @@ This repository simplifies using a Docker `compose.yml` of a self-hosted service
 - Run a holesail enabled service in Docker
 - Run a holesail connected client in Docker
 
+This repository provides two templates:
+1. A docker template to launch a holesail server to expose a service outside your home network (and optionally run that service in docker)
+2. A docker template to launch a holesail client to connect to the holesail server
 
-## Overview
-Docker allows you to pull prebullt images and run them in isolated containers ([find some interesting ones here](https://github.com/petersem/dockerholics)). While many server apps offer standalone Docker images, [holesail](https://holesail.io) simplifies connecting to these services from anywhere. You need [Docker](https://docs.docker.com) installed. On Mac, additional packages or usage of [OrbStack](https://orbstack.dev) will be needed.
+You can make copies of these folders and edit them to add new services.
 
-The primary implementation uses [holesail](https://holesail.io), a newer version of [hypertele](https://github.com/bitfinexcom/hypertele). This repository will be updated as Holesail evolves, with a branch for those preferring hypertele and an MIT license.
-
-## What Does This Repo Do?
-
-> Note: This repo contains a few helper scripts. If you don't want to run these scripts you can make a copy of the `.template_service` folder for each of your services. You will just need to add your own `compose.yml` and edit the `.env` file before running `docker compose up`.
-
-You will need to perform 3 steps:
-1. run `bash build_holesail_service.sh`
-2. place a compose.yml that defines your service (these are often provided by the service) in the folder created for you
-3. run `bash start_service.sh`
-
-Running `bash build_holesail_service.sh` in your Linux or Mac terminal will ask you to name the service, define the port the service will be running on, and then request or create a connector key for a secure connection.
-
-After you provide your `compose.yml` file, `start_service.sh` will use that file along with the other files in the folder to run your service alongside a dedicated holesail connection.
+## Service template
+1. To start cd into a copy of the `.service_template` folder
+  - run `bash run_holesail_service.sh`
+  - **or** simply fill out the `.env` file and run `docker compose up --build -d`
+2. Optionally, add the docker compose.yml for a new service that you would like to run with holesail into the `compose.override.yml` file
 
 Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs holesail_container_name` on the holesail container. Your connection key is also accessible with quotation marks around it in the `.env` file for your service.
 
-## Connecting Remotely
+## Client template
+To start cd into a copy of the `.client_template` folder
+  - run `bash connect_client.sh`
+  - **or** simply fill out the `.env` file and run `docker compose up --build -d`
 
-Once your connection is live you can connect with your connector key by running `holesail YOUR_CONNECTOR --port ANY_PORT --localhost` and then access on that machine at `http://localhost:ANY_PORT`. Alternatively, you can copy your service folder to a new machine and launch a client docker container by running `bash connect_client.sh` from within the `client` folder.
+As with the service containers, you can use `docker ps` and `docker logs container_name` to see container info including the address of your local service access
 
-## Connecting
-
-Once your connection is live you can connect with your connector key by running `holesail YOUR_CONNECTOR --port ANY_PORT --host localhost` and then access on that machine at `http://localhost:ANY_PORT`. Alternatively, you can copy your service folder to a new machine and launch a client docker container by running `bash connect_client.sh` from within the `client` folder.
-
-## Example
-
+## Service Example
 A good example to test is using Dozzle, which serves as a dashboard for your running docker containers. All the compose file was taken from [their website](https://dozzle.dev/guide/getting-started).
 
-Try creating a dozzle service with a port of 9999 and using a `compose.yml` with the following:
+Setting the files below will allow you to launch this service and holesail with `docker compose up --build -d`. `bash run_holesail_service.sh` will interactively create the `.env` and start the services.
 
+`.env`
+```bash
+DOCKER_NAME="dozzle"  # A unique name for your docker container
+DOCKER_PORT=3030  # The port that will be used by your server - can be the same as the service port or different if needed
+HOLESAIL_CONNECTOR="make_this_a_random_strong_password!!!!!!"
+```
+
+`compose.override.yml`
 ```yaml
 version: "3"
 services:
@@ -54,9 +53,12 @@ services:
       - 9999:8080
 ```
 
+## Additional Resources
+Docker allows you to pull prebuilt images and run them in isolated containers ([find some interesting ones here](https://github.com/petersem/dockerholics)). While many server apps offer standalone Docker images, [holesail](https://holesail.io) simplifies connecting to these services from anywhere. You need [Docker](https://docs.docker.com) installed. On Mac, additional packages or usage of [OrbStack](https://orbstack.dev) will be needed.
+
+The primary implementation uses [holesail](https://holesail.io), a newer version of [hypertele](https://github.com/bitfinexcom/hypertele). This repository will be updated as Holesail evolves, with a branch for those preferring hypertele and an MIT license.
+
 ## Common Questions
-- What are these scripts doing?
-   - These scripts are just a tool to assist building `compose.override.yml`, and `.env` files that define the Docker names for your service and a holesail connection that will share only this new service to the outside world. Keep in mind that the `compose.yml` from existing services may run other commands that could expose other data or other containers. For example, dozzle by default will show you the logs of all the containers!
 - Why docker? Holesail is already really easy to use.
   - I am using Docker because it makes it easy to organize, launch, and maintain, services on a self-hosted machine. These templates are just a goal to add holesail into that mix to make it even easier
 
