@@ -25,7 +25,7 @@ Run `docker ps` to see running containers. To view logs and find your holesail k
 
 ## Example
 
-See in an example the `traggo_example folder`. All the compose file was taken from [their installation page](https://traggo.net/install/). The only modification was adding `restart: unless-stopped` to the `.yml` to allow the service to restart on its own.
+See in an example the `dozzle_example folder`. All the compose file was taken from [their website](https://dozzle.dev/guide/getting-started). The only modification was adding `restart: unless-stopped` to the `.yml` to allow the service to restart on its own. Dozzle is also a helpful tool to view your docker logs as you add more.
 
 **TODO:**
 - Create a script to launch a persistent Docker image on the client side.
