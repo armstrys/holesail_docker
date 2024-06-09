@@ -27,7 +27,7 @@ Run `docker ps` to see running containers. To view logs and find your holesail k
 
 ## Connecting
 
-Once your connection is live you can connect with your connector key by running `holesail YOUR_CONNECTOR --port ANY_PORT --localhost` and then access on that machine at `http://localhost:ANY_PORT`. Alternatively, you can copy your service folder to a new machine and launch a client docker container by running `bash connect_client.sh` from within the `client` folder.
+Once your connection is live you can connect with your connector key by running `holesail YOUR_CONNECTOR --port ANY_PORT --host localhost` and then access on that machine at `http://localhost:ANY_PORT`. Alternatively, you can copy your service folder to a new machine and launch a client docker container by running `bash connect_client.sh` from within the `client` folder.
 
 ## Example
 
