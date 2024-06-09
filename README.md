@@ -36,7 +36,7 @@ Setting the files below will allow you to launch this service and holesail with 
 `.env`
 ```bash
 DOCKER_NAME="dozzle"  # A unique name for your docker container
-DOCKER_PORT=3030  # The port that will be used by your server - can be the same as the service port or different if needed
+DOCKER_PORT=9999  # The port that will be used by your server - can be the same as the service port or different if needed
 HOLESAIL_CONNECTOR="make_this_a_random_strong_password!!!!!!"
 ```
 
@@ -52,6 +52,19 @@ services:
     ports:
       - 9999:8080
 ```
+
+## Client Example
+On another computer you can set up a dozzle client template by copying the `.template_client` folder and running `bash run_holesail_client.sh` or configuring the `.env` as seen below
+
+`.env`
+```bash
+DOCKER_NAME="dozzle"  # A The name of the service you are connecting to
+HOLESAIL_PORT=9999  # The port you want to use to find your service locally
+HOLESAIL_CONNECTOR="this_should_match_the_key_in_your_service" # The connection string for your holesail connection (see your service)
+```
+
+You will now be able to access your service at `http://localhost:9999`
+
 
 ## Additional Resources
 Docker allows you to pull prebuilt images and run them in isolated containers ([find some interesting ones here](https://github.com/petersem/dockerholics)). While many server apps offer standalone Docker images, [holesail](https://holesail.io) simplifies connecting to these services from anywhere. You need [Docker](https://docs.docker.com) installed. On Mac, additional packages or usage of [OrbStack](https://orbstack.dev) will be needed.
