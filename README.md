@@ -1,20 +1,23 @@
-# Easy Docker Tunnels
+# Templates for Easy Docker Tunnels
 ### Run a Docker container with a service and connect to it anywhere.
 
 > **Warning:** This repository hosts your service through a public distributed hashtable. Connection and contents are protected by a cryptographic key, which you must safeguard. However, your IP address may be exposed. This is a side project, and I am not a security expert. Use at your own risk.
 
-This repository simplifies pulling a Docker image of a self-hosted service and serving it across a [HyperDHT](https://docs.pears.com/building-blocks/hyperdht) P2P tunnel, avoiding many networking challenges associated with remote access.
+This repository simplifies using a Docker `compose.yml` of a self-hosted service and serving it across a [HyperDHT](https://docs.pears.com/building-blocks/hyperdht) P2P tunnel, avoiding many networking challenges associated with remote access.
 - Run a holesail enabled service in Docker
 - Run a holesail connected client in Docker
 
-## Getting Started (skip if you're familiar with Docker)
-Docker allows you to pull prebuilt images and run them in isolated containers. While many server apps offer standalone Docker images, [holesail](https://holesail.io) simplifies connecting to these services from anywhere. You need [Docker](https://docs.docker.com) installed. On Mac, additional packages or usage of [OrbStack](https://orbstack.dev) will be needed.
+
+## Overview
+Docker allows you to pull prebullt images and run them in isolated containers ([find some interesting ones here](https://github.com/petersem/dockerholics)). While many server apps offer standalone Docker images, [holesail](https://holesail.io) simplifies connecting to these services from anywhere. You need [Docker](https://docs.docker.com) installed. On Mac, additional packages or usage of [OrbStack](https://orbstack.dev) will be needed.
 
 The primary implementation uses [holesail](https://holesail.io), a newer version of [hypertele](https://github.com/bitfinexcom/hypertele). This repository will be updated as Holesail evolves, with a branch for those preferring hypertele and an MIT license.
 
 ## What Does This Repo Do?
 
-You will need to perform a minimum of 3 steps:
+> Note: This repo contains a few helper scripts. If you don't want to run these scripts you can make a copy of the `.template_service` folder for each of your services. You will just need to add your own `compose.yml` and edit the `.env` file before running `docker compose up`.
+
+You will need to perform 3 steps:
 1. run `bash build_holesail_service.sh`
 2. place a compose.yml that defines your service (these are often provided by the service) in the folder created for you
 3. run `bash start_service.sh`
@@ -23,7 +26,11 @@ Running `bash build_holesail_service.sh` in your Linux or Mac terminal will ask 
 
 After you provide your `compose.yml` file, `start_service.sh` will use that file along with the other files in the folder to run your service alongside a dedicated holesail connection.
 
-Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs holesailcontainer_name` on the holesail container. Your connection key is also accessible with quotation marks around it in the `.env` file for your service.
+Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs holesail_container_name` on the holesail container. Your connection key is also accessible with quotation marks around it in the `.env` file for your service.
+
+## Connecting Remotely
+
+Once your connection is live you can connect with your connector key by running `holesail YOUR_CONNECTOR --port ANY_PORT --localhost` and then access on that machine at `http://localhost:ANY_PORT`. Alternatively, you can copy your service folder to a new machine and launch a client docker container by running `bash connect_client.sh` from within the `client` folder.
 
 ## Connecting
 
@@ -47,6 +54,11 @@ services:
       - 9999:8080
 ```
 
+## Common Questions
+- What are these scripts doing?
+   - These scripts are just a tool to assist building `compose.override.yml`, and `.env` files that define the Docker names for your service and a holesail connection that will share only this new service to the outside world. Keep in mind that the `compose.yml` from existing services may run other commands that could expose other data or other containers. For example, dozzle by default will show you the logs of all the containers!
+- Why docker? Holesail is already really easy to use.
+  - I am using Docker because it makes it easy to organize, launch, and maintain, services on a self-hosted machine. These templates are just a goal to add holesail into that mix to make it even easier
+
 **TODO:**
-- Create a script to launch a persistent Docker image on the client side.
 - Develop a limited version using hypertele for MIT license compatibility.

@@ -1,6 +1,6 @@
 name: "${DOCKER_NAME}"
 services:
-  holesail:
+  holesail-client:
     build:
       context: .
       dockerfile: Dockerfile
