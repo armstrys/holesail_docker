@@ -17,7 +17,7 @@ You can make copies of these folders and edit them to add new services.
 1. To start cd into a copy of the `.service_template` folder
   - run `bash run_holesail_service.sh`
   - **or** simply fill out the `.env` file and run `docker compose up --build -d`
-2. Optionally, add the docker compose.yml for a new service that you would like to run with holesail into the `compose.override.yml` file
+2. Optionally, add the docker compose.yml for a new service that you would like to run with holesail as a file called `compose.override.yml` file
 
 Run `docker ps` to see running containers. To view logs and find your holesail key, use `docker logs holesail_container_name` on the holesail container. Your connection key is also accessible with quotation marks around it in the `.env` file for your service.
 
@@ -31,9 +31,9 @@ As with the service containers, you can use `docker ps` and `docker logs contain
 ## Service Example
 A good example to test is using Dozzle, which serves as a dashboard for your running docker containers. All the compose file was taken from [their website](https://dozzle.dev/guide/getting-started).
 
-Setting the files below will allow you to launch this service and holesail with `docker compose up --build -d`. `bash run_holesail_service.sh` will interactively create the `.env` and start the services.
+Setting the files below will allow you to launch this service and holesail with `docker compose up --build -d`. `bash run_holesail_service.sh` will interactively create the `.env` and start the services. You will also need a `compose.override.yml` that defines your service.
 
-`.env`
+Contents of `.env`:
 ```bash
 DOCKER_NAME="dozzle"  # A unique name for your docker container
 DOCKER_PORT=9999  # The port that will be used by your server - can be the same as the service port or different if needed
@@ -41,7 +41,7 @@ HOLESAIL_CONNECTOR="make_this_a_random_strong_password!!!!!!"
 SERVICE_HOST="localhost"
 ```
 
-`compose.override.yml`
+Contents of `compose.override.yml`:
 ```yaml
 version: "3"
 services:
