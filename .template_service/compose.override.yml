@@ -1,2 +1,0 @@
-# Put the docker compose.yml of a service that you would like to expose with holesail
-# and make sure that the port in your .env matches the port listed below
